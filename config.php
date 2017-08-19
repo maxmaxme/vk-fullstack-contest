@@ -28,15 +28,9 @@ require_once FUNCTIONS . 'engine.php';
 require_once FUNCTIONS . 'methods.php';
 require_once CLS . 'auth.class.php';
 require_once CLS . 'safemysql.class.php';
-require_once CLS . 'mustacheTemplates.class.php';
-require_once CLS . 'Mustache/Autoloader.php';
 require_once CFG . 'config.inc.php';
 
 
 $db = new SafeMySQL($cfg['db_settings']);
-
-Mustache_Autoloader::register();
-$mustache = new Mustache_Engine;
-$mustacheTemplates = new mustacheTemplates;
 
 $auth = new auth(varStr('hash'));
