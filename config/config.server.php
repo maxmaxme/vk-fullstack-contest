@@ -6,3 +6,5 @@ $cfg['db_settings'] = array(
 	'db'      => 'vk-contest',
 	'errmode' => 'error'
 );
+
+$cfg['vk_client_secret'] = '';

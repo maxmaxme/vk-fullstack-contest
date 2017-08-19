@@ -1,0 +1,151 @@
+
+body {
+    font-family: Arial, Tahoma, sans-serif;
+}
+#orderPage > .col-md-6 {
+    padding: 0;
+}
+.order-item {
+    border: 1px solid #cecece;
+    padding: 15px 10px;
+    margin: 3px;
+}
+.order-item h3 {
+    margin: 0 0 10px;
+}
+.order-item .reward {
+    color: #5cb85c;
+    font-size: 25px;
+    text-align: left;
+}
+.order-item .button {
+    text-align: right;
+}
+.order-item .button .btn {
+    outline: none;
+    text-transform: uppercase;
+}
+.order-item .button .btn:disabled {
+    cursor: default;
+}
+
+.loading {
+    width: 188px;
+    height: 188px;
+    background: url("/images/loading.gif");
+    margin: 0 auto;
+}
+
+
+.popup_container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.6);
+
+}
+.popup_container:before {
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    content: '';
+}
+
+.popup {
+    display: inline-block;
+    white-space: normal;
+    vertical-align: middle;
+    font-size: 25px;
+    text-align: center;
+    max-width: 500px;
+    padding: 30px;
+    border: 1px solid #cecece;
+    background: white;
+
+}
+.popup h3 {
+    margin-top: 0;
+
+}
+
+.popup input, .popup textarea {
+    font-size: 15px;
+    resize: vertical;
+    width: 100%;
+    text-align: center;
+    font-weight: normal;
+    border: 0;
+    border-bottom: 1px solid #cecece;
+    outline: none;
+    padding: 10px;
+    color: #8b8b8b
+}
+
+.popup label {
+    width: 100% !important;
+}
+
+.popup .btn, .popup .btn:active {
+    outline: none; !important;
+}
+
+#authContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 0;
+
+}
+#authContainer:before {
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    content: '';
+}
+
+#authForm {
+    display: inline-block;
+    white-space: normal;
+    vertical-align: middle;
+    font-size: 25px;
+    text-align: center;
+
+}
+
+#authForm div {
+    margin-bottom: 15px;
+}
+
+
+#userProfile img {
+    width: 48px;
+    margin: 1px 5px 1px 0;
+    border-radius: 24px;
+}
+#userProfile #userName {
+    vertical-align: bottom;
+}
+
+.close_popup {
+    float: right;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    top: -60px;
+    left: 25px;
+    background: url(/images/icons/cross-remove-sign.png);
+    cursor: pointer;
+    background-size: 20px;
+}

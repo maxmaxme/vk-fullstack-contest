@@ -1,0 +1,16 @@
+<div class="popup_container">
+	<form class="popup">
+		<h3>Добавление нового заказа</h3>
+		<div class="close_popup" onclick="closePopup(this)"></div>
+		<label for="title">
+			<input id="title" placeholder="Краткое описание">
+		</label>
+		<label for="description">
+			<textarea id="description" placeholder="Полное описание заказа"></textarea>
+		</label>
+		<label for="reward">
+			<input id="reward" type="number" placeholder="Вознаграждение, ₽">
+		</label>
+		<button class="btn btn-success" onclick="addNewOrderAction(this); return false;">Добавить заказ</button>
+	</form>
+</div>

@@ -39,3 +39,4 @@ Mustache_Autoloader::register();
 $mustache = new Mustache_Engine;
 $mustacheTemplates = new mustacheTemplates;
 
+$auth = new auth(varStr('hash'));

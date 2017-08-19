@@ -2,8 +2,6 @@ var host = '/';
 
 function api(method, params, callback) {
 
-    params['access_token'] = access_token;
-
     $.post(host + 'API/' + method, params)
         .done(function(data) {
             if (data['success']) {

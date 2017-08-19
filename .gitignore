@@ -1,3 +1,4 @@
 /.idea/
 /config/config.server.*.php
 /public/test
+log.txt

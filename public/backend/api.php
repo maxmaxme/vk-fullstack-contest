@@ -6,9 +6,21 @@ header('Content-Type: application/json; charset=utf-8');
 
 $method = varStr('method');
 
-$error = $result = '';
+$error = '';
+$result = [];
 
 switch ($method) {
+
+	case 'orders.add': list($result, $error) = orders::add(
+		varStr('title'),
+		varStr('description'),
+		varInt('reward')
+	); break;
+	case 'orders.get': list($result, $error) = orders::get(varStr('act')); break;
+	case 'orders.do': list($result, $error) = orders::doOrder(varInt('orderID')); break;
+	case 'orders.finish': list($result, $error) = orders::finishOrder(varInt('orderID')); break;
+	
+	case 'auth.checkHash': list($result, $error) = auth::checkHash(varStr('hash')); break;
 
 
 	default:

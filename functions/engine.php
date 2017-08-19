@@ -73,3 +73,9 @@ function getIP() {
 	}
 	return $ip;
 }
+
+
+function vkAPI($method, $params = []) {
+	$url = 'https://api.vk.com/method/' . $method;
+	return json_decode(curl($url, $params), 1);
+}
