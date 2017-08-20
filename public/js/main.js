@@ -5,7 +5,7 @@ $(function () {
 
     var hash = getCookie('hash');
 
-    if (hash && checkHash(hash))
+    if (checkHash(hash))
         initOrders();
     else
         initAuth();
@@ -20,8 +20,9 @@ function updateBalance(newBalance) {
 
     balance = parseInt(newBalance);
 
-    $('span', $balanceBlock).html(balance);
-    $balanceBlock.data('balance', balance);
+    $balanceBlock
+        .data('balance', balance)
+        .find('span').html(balance);
 }
 
 function initAuth() {
@@ -31,20 +32,22 @@ function initAuth() {
 function checkHash(hash) {
     var ok = false;
 
-    $.ajax({
-        url: host + 'API/auth.checkHash?hash=' + hash,
-        type: 'get',
-        dataType: 'json',
-        async: false,
-        success: function(data) {
-            if(data['result']['Name']) {
-                name = data['result']['Name'];
-                photo = data['result']['Photo'];
-                balance = parseInt(data['result']['Balance']);
-                ok = true;
+    if (hash) {
+        $.ajax({
+            url: host + 'API/auth.checkHash?hash=' + hash,
+            type: 'get',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if (data['result']['Name']) {
+                    name = data['result']['Name'];
+                    photo = data['result']['Photo'];
+                    balance = parseInt(data['result']['Balance']);
+                    ok = true;
+                }
             }
-        }
-    });
+        });
+    }
 
     return ok;
 }
