@@ -1,0 +1,11 @@
+<div class="popup_container">
+	<form class="popup">
+		<h3>Пополнение баланса</h3>
+		<div class="close_popup" onclick="closePopup(this)"></div>
+		<div class="alert alert-danger errorBlock"></div>
+		<label for="amount">
+			<input id="amount" type="number" placeholder="Сумма, ₽">
+		</label>
+		<button class="btn btn-success" onclick="refillBalanceAction(this); return false;">Пополнить</button>
+	</form>
+</div>

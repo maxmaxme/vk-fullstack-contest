@@ -1,0 +1,12 @@
+<div class="popup_container">
+	<form class="popup">
+		<h3>Вывод денег</h3>
+		<div class="close_popup" onclick="closePopup(this)"></div>
+		<div class="alert alert-danger errorBlock"></div>
+		<div class="alert alert-secondary">Нельзя вывести больше суммарного вознаграждения по вашим заказам</div>
+		<label for="amount">
+			<input id="amount" type="number" placeholder="Сумма, ₽">
+		</label>
+		<button class="btn btn-success" onclick="withdrawBalanceAction(this); return false;">Вывести</button>
+	</form>
+</div>

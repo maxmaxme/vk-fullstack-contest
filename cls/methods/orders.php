@@ -1,5 +1,4 @@
 <?php
-
 class orders {
 	static public function get($act) {
 		global $db, $auth;
@@ -12,15 +11,9 @@ class orders {
 
 		if (!$error) {
 			$filters = [
-				'new' => ['join' => '', 'cond' => 'o.StatusID=1'],
-				'work' => [
-					'join' => 'inner join users_by_orders ubo on o.ID=ubo.OrderID and ubo.UserID=' . $auth->user,
-					'cond' => 'o.StatusID=2'
-				],
-				'closed' => [
-					'join' => 'inner join users_by_orders ubo on o.ID=ubo.OrderID and ubo.UserID=' . $auth->user,
-					'cond' => 'o.StatusID=3'
-				]
+				'new' => 'o.StatusID=1',
+				'work' => 'o.StatusID=2 and ' . $auth->user . ' IN (ubo.UserID, o.CreatorID)',
+				'closed' => 'o.StatusID=3 and ' . $auth->user . ' IN (ubo.UserID, o.CreatorID)'
 			];
 
 			$allowed_filters = array_keys($filters);
@@ -37,18 +30,20 @@ class orders {
 				o.Description,
 				o.Reward,
 				os.Title as Status,
-				o.CreatorID!=?i and StatusID=1 as CanDoBtn,
+				o.CreatorID!=?i and o.StatusID=1 as CanDoBtn,
 				o.CreatorID=?i as MyOrder,
-				o.StatusID=2 as CanFinishBtn
+				o.StatusID=2 and o.CreatorID!=?i as CanFinishBtn,
+				if(o.StatusID IN (2, 3) and o.CreatorID=?i, u.Name, '') as Executor
 				
 			from orders o
 			
 			inner join order_status os on o.StatusID=os.ID and os.Hidden=0
-			{$filters[$act]['join']}
+			left join users_by_orders ubo on o.ID=ubo.OrderID
+			left join users u on u.ID=ubo.UserID
 			
-			where 1 and {$filters[$act]['cond']}
+			where 1 and {$filters[$act]}
 			
-			order by o.DateTime DESC", $auth->user, $auth->user);
+			order by o.DateTime DESC", $auth->user, $auth->user, $auth->user, $auth->user);
 
 
 			foreach ($result['orders'] as &$order) {
@@ -76,13 +71,13 @@ class orders {
 
 		if (!$auth->user)
 			$error = 'Access denied';
-		if (!$orderID)
+		elseif (!$orderID)
 			$error = 'Заполнены не все поля';
-		if (!$db->getOne('select count(*) from orders where ID=?i and StatusID=1', $orderID))
+		elseif (!$db->getOne('select count(*) from orders where ID=?i and StatusID=1', $orderID))
 			$error = 'Заказ не найдено';
-		if ($db->getOne('select CreatorID=?i from orders where ID=?i', $auth->user, $orderID))
+		elseif ($db->getOne('select CreatorID=?i from orders where ID=?i', $auth->user, $orderID))
 			$error = 'Вы не можете выполнять этот заказ (вы сами его создали)';
-		if ($db->getOne('select count(*) from users_by_orders ubo
+		elseif ($db->getOne('select count(*) from users_by_orders ubo
 						inner join orders o on o.ID=ubo.OrderID and o.StatusID=2 
 						WHERE ubo.UserID=?i', $auth->user))
 			$error = 'Нельзя одновременно выполнять больше одного заказа';
@@ -103,13 +98,13 @@ class orders {
 		global $db, $auth;
 
 		$error = '';
-		$result = [];
+		$result = $orderInfo = [];
 
 		if (!$auth->user)
 			$error = 'Access denied';
-		if (!$orderID)
+		elseif (!$orderID)
 			$error = 'Заполнены не все поля';
-		if (!$db->getOne('select count(*) from users_by_orders ubo
+		elseif (!$orderInfo = $db->getRow('select o.ID, o.Reward, o.CreatorID from users_by_orders ubo
 						inner join orders o on o.ID=ubo.OrderID and o.StatusID=2 
 						WHERE ubo.UserID=?i and ubo.OrderID=?i', $auth->user, $orderID))
 			$error = 'Заказ не найден';
@@ -117,6 +112,10 @@ class orders {
 		if (!$error) {
 			$db->query('update orders set StatusID=3 where ID=?i', $orderID);
 
+			$db->query('update users set Balance=Balance-?i where ID=?i', $orderInfo['Reward'], $orderInfo['CreatorID']);
+			$db->query('update users set Balance=Balance+?i where ID=?i', $orderInfo['Reward'], $auth->user);
+
+			$result['balance'] = $db->getOne('select Balance from users where ID=?i', $auth->user);
 		}
 
 
@@ -132,9 +131,14 @@ class orders {
 
 		if (!$auth->user)
 			$error = 'Access denied';
-		if (!$title || !$reward)
+		elseif (!$title || $reward < 1)
 			$error = 'Заполнены не все поля';
-
+		elseif ($db->getOne('select 
+								sum(o.Reward) # сколько заморожено денег на будущие заказы
+							from orders o
+							
+							where o.StatusID IN (1, 2) and o.CreatorID=?i', $auth->user) + $reward > $auth->balance)
+			$error = 'Недостаточно денег на балансе';
 
 		if (!$error) {
 			$db->query('insert into orders set 

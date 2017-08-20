@@ -1,14 +1,17 @@
 var host = '/';
 
-function api(method, params, callback) {
+function api(method, params, successCallback, errorCallback) {
 
     $.post(host + 'API/' + method, params)
         .done(function(data) {
             if (data['success']) {
-                if (callback)
-                    callback(data['result']);
+                if (successCallback)
+                    successCallback(data['result']);
             } else {
-                alert('Ошибка: ' + data['error']);
+                if (errorCallback)
+                    errorCallback(data['error']);
+                else
+                    alert('Ошибка: ' + data['error']);
             }
         });
 

@@ -24,8 +24,14 @@ foreach ($server_configs as $server_config) {
 }
 
 
+$cls_directory = CLS . '/methods/';
+$methods = array_diff(scandir($cls_directory), array('..', '.'));
+
+foreach($methods as $method_file)
+	require_once $cls_directory . $method_file;
+
+
 require_once FUNCTIONS . 'engine.php';
-require_once FUNCTIONS . 'methods.php';
 require_once CLS . 'auth.class.php';
 require_once CLS . 'safemysql.class.php';
 require_once CFG . 'config.inc.php';

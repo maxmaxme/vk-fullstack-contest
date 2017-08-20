@@ -19,7 +19,10 @@ switch ($method) {
 	case 'orders.get': list($result, $error) = orders::get(varStr('act')); break;
 	case 'orders.do': list($result, $error) = orders::doOrder(varInt('orderID')); break;
 	case 'orders.finish': list($result, $error) = orders::finishOrder(varInt('orderID')); break;
-	
+
+	case 'balance.refill': list($result, $error) = balance::refill(varInt('amount')); break;
+	case 'balance.withdraw': list($result, $error) = balance::withdraw(varInt('amount')); break;
+
 	case 'auth.checkHash': list($result, $error) = auth::checkHash(varStr('hash')); break;
 
 

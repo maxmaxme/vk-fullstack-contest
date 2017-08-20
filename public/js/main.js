@@ -1,4 +1,4 @@
-var name, photo
+var name, photo, balance;
 
 $(function () {
 
@@ -14,6 +14,15 @@ $(function () {
 
 
 });
+
+function updateBalance(newBalance) {
+    var $balanceBlock = $('#userBalance');
+
+    balance = parseInt(newBalance);
+
+    $('span', $balanceBlock).html(balance);
+    $balanceBlock.data('balance', balance);
+}
 
 function initAuth() {
     $('body').prepend(Mustache.render(mustacheTemplates.auth))
@@ -31,6 +40,7 @@ function checkHash(hash) {
             if(data['result']['Name']) {
                 name = data['result']['Name'];
                 photo = data['result']['Photo'];
+                balance = parseInt(data['result']['Balance']);
                 ok = true;
             }
         }
@@ -44,6 +54,7 @@ function initOrders() {
 
     $('body').prepend(Mustache.render(mustacheTemplates.menu, {
             userPhoto: photo,
+            balance: balance,
             userName: name
         }) +
         '<div class="container" id="orderPage"></div>');
@@ -57,7 +68,6 @@ function initOrders() {
     });
 
     var hash = window.location.hash.replace('#', '') || 'new';
-    console.log(hash);
     $('.navbar li#filter-' + hash).click();
 
 }
@@ -99,24 +109,35 @@ function doOrder(button, orderID) {
 function finishOrder(button, orderID) {
     api('orders.finish', {
         orderID: orderID
-    }, function () {
+    }, function (result) {
          $(button)
              .attr('disabled', true)
              .removeClass('btn-success')
              .addClass('btn-default')
              .html('Завершено');
+
+         updateBalance(result['balance']);
+         // todo обновлять баланс в шапке
     });
 }
 
 function addNewOrder() {
     $('body').prepend(Mustache.render(mustacheTemplates.addNewOrder));
 }
+function refillBalance() {
+    $('body').prepend(Mustache.render(mustacheTemplates.refillBalance));
+}
+function withdrawBalance() {
+    $('body').prepend(Mustache.render(mustacheTemplates.withdrawBalance));
+}
 
 function addNewOrderAction(_this) {
     var $form = $(_this).closest('form'),
+        $errorBlock = $('.errorBlock', $form),
         title = $('#title', $form).val(),
         description = $('#description', $form).val(),
         reward = $('#reward', $form).val();
+
 
     api('orders.add', {
         title: title,
@@ -125,6 +146,40 @@ function addNewOrderAction(_this) {
     }, function () {
         closePopup(_this);
         $('.navbar li#filter-new').click();
+    }, function (error) {
+        $errorBlock.html(error);
+    });
+}
+
+function refillBalanceAction(_this) {
+    var $form = $(_this).closest('form'),
+        $errorBlock = $('.errorBlock', $form),
+        amount = $('#amount', $form).val();
+
+
+    api('balance.refill', {
+        amount: amount
+    }, function (result) {
+        closePopup(_this);
+        updateBalance(result['balance']);
+    }, function (error) {
+        $errorBlock.html(error);
+    });
+}
+
+function withdrawBalanceAction(_this) {
+    var $form = $(_this).closest('form'),
+        $errorBlock = $('.errorBlock', $form),
+        amount = $('#amount', $form).val();
+
+
+    api('balance.withdraw', {
+        amount: amount
+    }, function (result) {
+        closePopup(_this);
+        updateBalance(result['balance']);
+    }, function (error) {
+        $errorBlock.html(error);
     });
 }
 

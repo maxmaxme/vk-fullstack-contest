@@ -2,6 +2,7 @@
 	<form class="popup">
 		<h3>Добавление нового заказа</h3>
 		<div class="close_popup" onclick="closePopup(this)"></div>
+		<div class="alert alert-danger errorBlock"></div>
 		<label for="title">
 			<input id="title" placeholder="Краткое описание">
 		</label>
