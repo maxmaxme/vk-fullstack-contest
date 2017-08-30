@@ -67,3 +67,15 @@ function deleteCookie(name) {
         expires: -1
     })
 }
+
+
+function substr_to_space(str, len) {
+
+    if (!len)
+        len = 140;
+
+    return str.length > len ?
+        str.substring(0, str.indexOf(' ', len)) + '...'
+        : str;
+
+}

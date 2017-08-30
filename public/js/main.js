@@ -64,14 +64,18 @@ function initOrders() {
 
 
 
-    $('.navbar ul.js li').click(function () {
-        $('.navbar li.active').removeClass('active');
-        $(this).addClass('active');
-        getOrders($('a', $(this)).attr('href').replace('#', ''));
+    $('nav .container > a').click(function () {
+        var type = $(this).attr('href').replace('#', '');
+
+        if (type) {
+            $('nav a.active').removeClass('active');
+            $(this).addClass('active');
+            getOrders(type);
+        }
     });
 
     var hash = window.location.hash.replace('#', '') || 'new';
-    $('.navbar li#filter-' + hash).click();
+    $('nav a#filter-' + hash).click();
 
 }
 
@@ -88,7 +92,12 @@ function getOrders(act) {
 
         if (result.orders.length)
             $ordersContainer.html(Mustache.render(mustacheTemplates.order, {
-                orders: result.orders
+                orders: result.orders,
+                getDescription: function() {
+                    return function(text, render) {
+                        return nl2br(substr_to_space(render(text)));
+                    }
+                }
             }));
         else
             $ordersContainer.html('<div class="text-center">Ничего не найдено');
@@ -120,7 +129,6 @@ function finishOrder(button, orderID) {
              .html('Завершено');
 
          updateBalance(result['balance']);
-         // todo обновлять баланс в шапке
     });
 }
 
@@ -148,7 +156,7 @@ function addNewOrderAction(_this) {
         reward: reward
     }, function () {
         closePopup(_this);
-        $('.navbar li#filter-new').click();
+        $('nav a#filter-new').click();
     }, function (error) {
         $errorBlock.html(error);
     });

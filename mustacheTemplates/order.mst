@@ -1,12 +1,12 @@
 {{#orders}}
-<div class="col-md-12">
+<div class="order-container">
 	<div class="order-item">
 		<h3>{{Title}}</h3>
-		<p>{{Description}}</p>
+		<p>{{#getDescription}}{{Description}}{{/getDescription}}</p>
 		<div class="row">
-			<div class="col-md-6 reward">{{Reward}}₽</div>
+			<div class="col reward">{{Reward}}₽</div>
 
-			<div class="col-md-6 button">
+			<div class="col button">
 				{{#Executor}}
 				Исполнитель: {{Executor}}
 				{{/Executor}}
@@ -23,7 +23,6 @@
 				<button class="btn btn-success" onclick="finishOrder(this, '{{OrderID}}')">завершить</button>
 				{{/CanFinishBtn}}
 			</div>
-
 		</div>
 	</div>
 </div>

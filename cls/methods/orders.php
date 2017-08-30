@@ -129,6 +129,12 @@ class orders {
 		$error = '';
 		$result = [];
 
+		$from = ["|[ ]+|is", "|[\n]+|is"];
+		$to_description = [" ", "\n"];
+
+		$title = preg_replace($from, ' ', $title);
+		$description = preg_replace($from, $to_description, $description);
+
 		if (!$auth->user)
 			$error = 'Access denied';
 		elseif (!$title || $reward < 1)

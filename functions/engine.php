@@ -79,3 +79,11 @@ function vkAPI($method, $params = []) {
 	$url = 'https://api.vk.com/method/' . $method;
 	return json_decode(curl($url, $params), 1);
 }
+
+function substr_to_space($str, $len = 140) {
+
+	return strlen($str) > $len ?
+		substr($str, 0, strpos($str, ' ', $len)).'...' :
+		$str;
+
+}

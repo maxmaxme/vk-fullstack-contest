@@ -1,46 +1,28 @@
-<nav class="navbar navbar-default">
+<nav>
 	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-				<span class="sr-only">Меню</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="/">Get it done!</a>
+		<a id="filter-new" href="#new">Новые</a>
+		<a id="filter-work" href="#work">В работе</a>
+		<a id="filter-closed" href="#closed">Завершённые</a>
+
+		<div class="dropdown pull-right">
+			<table id="userProfile" class="dropbtn">
+				<tr>
+					<td rowspan="2"><img src="{{userPhoto}}"></td>
+					<td id="userName">{{userName}} <span class="caret"></span></td>
+
+				</tr>
+				<tr>
+					<td id="userBalance" data-balance="{{balance}}">Баланс <span>{{balance}}</span> ₽</td>
+				</tr>
+			</table>
+			<div class="dropdown-content">
+				<a href="#" onclick="refillBalance()">Пополнить баланс</a>
+				<a href="#" onclick="withdrawBalance()">Вывести деньги</a>
+				<a href="/logout">Выйти</a>
+			</div>
 		</div>
-		<div id="navbar" class="navbar-collapse collapse">
-			<ul class="nav navbar-nav js">
-				<li id="filter-new"><a href="#new">Новые</a></li>
-				<li id="filter-work"><a href="#work">В работе</a></li>
-				<li id="filter-closed"><a href="#closed">Завершённые</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#" onclick="addNewOrder()">Добавить заказ</a></li>
 
+		<a href="#" onclick="addNewOrder()" class="pull-right">Добавить заказ</a>
 
-				<li class="dropdown">
-					<table id="userProfile" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<tr>
-							<td rowspan="2"><img src="{{userPhoto}}"></td>
-							<td id="userName">{{userName}} <span class="caret"></span></td>
-
-						</tr>
-						<tr>
-							<td id="userBalance" data-balance="{{balance}}">Баланс <span>{{balance}}</span> ₽</td>
-						</tr>
-					</table>
-
-					<ul class="dropdown-menu">
-						<li><a href="#" onclick="refillBalance()">Пополнить баланс</a></li>
-						<li><a href="#" onclick="withdrawBalance()">Вывести деньги</a></li>
-						<li><a href="/logout">Выйти</a></li>
-					</ul>
-
-
-
-				</li>
-			</ul>
-		</div>
 	</div>
 </nav>
