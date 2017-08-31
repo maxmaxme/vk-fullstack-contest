@@ -4,8 +4,10 @@ require_once '../../config.php';
 
 $code = $_REQUEST['code'];
 
+$url = PROTO . $_SERVER['SERVER_NAME'] . '/login';
+
 if ($code) {
-	$url = 'https://oauth.vk.com/access_token?client_id=6154721&client_secret=' . $cfg['vk_client_secret'] . '&redirect_uri=http://vk/login&code=' . $code;
+	$url = "https://oauth.vk.com/access_token?client_id=6154721&client_secret={$cfg['vk_client_secret']}&redirect_uri={$url}&code={$code}";
 
 	$result = json_decode(curl($url), true);
 

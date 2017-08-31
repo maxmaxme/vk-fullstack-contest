@@ -26,7 +26,9 @@ function updateBalance(newBalance) {
 }
 
 function initAuth() {
-    $('body').prepend(Mustache.render(mustacheTemplates.auth))
+    $('body').prepend(Mustache.render(mustacheTemplates.auth, {
+        domain: location.origin
+    }));
 }
 
 function checkHash(hash) {

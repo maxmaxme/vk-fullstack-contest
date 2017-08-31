@@ -8,6 +8,7 @@ define('CFG', SITE_PATH . 'config/');
 define('CLS', SITE_PATH . 'cls/');
 define('FUNCTIONS', SITE_PATH . 'functions/');
 
+$_REQUEST = array_merge($_GET, $_POST, $_COOKIE);
 
 $cfg = [];
 
